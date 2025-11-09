@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil Infantil</title>
+    
+    <link rel="stylesheet" href="/css/profile.css"> 
+    
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="profile-container">
+        
+        <div class="profile-avatar">
+            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=<%= username %>" alt="Avatar do Aluno" id="avatar-img">
+            <p>Clique em mim para mudar!</p>
+        </div>
+
+        <div class="profile-details">
+            <h2 id="username"><%= username %></h2>
+            <button id="edit-btn" title="Editar nome">✏️</button>
+        </div>
+
+        <div class="profile-stats">
+            <div class="stat-item">
+                <span class="stat-value"><%= points %></span>
+                <span class="stat-label">Pontos 🌟</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value"><%= level %></span>
+                <span class="stat-label">Nível 🚀</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value"><%= games %></span>
+                <span class="stat-label">Jogos 🎮</span>
+            </div>
+        </div>
+
+        <div class="profile-actions">
+            <button class="btn-logout">Sair da Conta</button>
+        </div>
+
+    </div>
+
+    <script src="/js/script.js"></script>
+</body>
+</html>

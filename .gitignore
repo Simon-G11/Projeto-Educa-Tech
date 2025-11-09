@@ -1,0 +1,7 @@
+# .gitignore
+
+# Ignora dependências do Node
+node_modules/
+
+# Ignora o arquivo de senhas e variáveis de ambiente!
+.env
