@@ -55,25 +55,3 @@ CREATE TABLE pontuacoes (
   FOREIGN KEY (id_aluno) REFERENCES alunos(id_aluno) ON DELETE CASCADE,
   FOREIGN KEY (id_jogo) REFERENCES jogos(id_jogo) ON DELETE CASCADE
 );
-
-USE escola_divertida;
-
--- 1. Crie um aluno de teste
--- (Como é o primeiro, o AUTO_INCREMENT vai dar a ele o id_aluno = 1)
-INSERT INTO alunos (nome, idade, turma, descricao) 
-VALUES ('Pingo', 8, '2A', 'Adoro jogos de matemática!');
-
--- 2. Crie alguns jogos
-INSERT INTO jogos (nome_jogo, descricao) 
-VALUES ('Quiz de Matemática', 'Teste seus conhecimentos'),
-       ('Caça-Palavras', 'Encontre as palavras escondidas');
-
--- 3. Dê algumas pontuações para o Aluno 1 nos Jogos 1 e 2
-INSERT INTO pontuacoes (id_aluno, id_jogo, pontos) 
-VALUES (1, 1, 150); -- 150 pontos no jogo 1
-
-INSERT INTO pontuacoes (id_aluno, id_jogo, pontos) 
-VALUES (1, 2, 300); -- 300 pontos no jogo 2
-
-INSERT INTO pontuacoes (id_aluno, id_jogo, pontos) 
-VALUES (1, 1, 250); -- Mais 250 pontos no jogo 1

@@ -5,7 +5,7 @@ const express = require('express');
 const path = require('path');
 const db = require('./src/config/database');
 const bcrypt = require('bcrypt');
-const session = require('express-session'); // <-- ⭐️ 1. IMPORTANDO O PACOTE DE SESSÃO
+const session = require('express-session'); // <-- 1. IMPORTANDO O PACOTE DE SESSÃO
 
 // 2. INICIALIZAÇÃO DO APP E CONSTANTES
 // =============================================
