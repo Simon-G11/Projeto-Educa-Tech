@@ -2,15 +2,22 @@
 
 const express = require('express');
 const router = express.Router();
-
-// Importa o "Gerente" (Controller)
 const profileController = require('../controllers/profileController');
-// Importa o "Segurança" (Middleware)
 const { checarSeLogado } = require('../middleware/authMiddleware');
 
-// Rota de Perfil (Protegida pelo 'checarSeLogado')
-// Quando alguém visitar /perfil, o 'checarSeLogado' roda primeiro.
-// Se ele deixar, o 'getProfilePage' é chamado.
+// Rota para MOSTRAR o perfil (a que já tínhamos)
 router.get('/perfil', checarSeLogado, profileController.getProfilePage);
+
+// -----------------------------------------------------------------
+// 👇 ROTAS NOVAS ADICIONADAS AQUI 👇
+
+// Rota para PROCESSAR a atualização da descrição
+router.post('/perfil/atualizar', checarSeLogado, profileController.updateProfile);
+
+// Rota para GERAR um novo avatar aleatório
+router.get('/perfil/novo-avatar', checarSeLogado, profileController.updateAvatar);
+
+// 👆 FIM DAS ROTAS NOVAS 👆
+// -----------------------------------------------------------------
 
 module.exports = router;

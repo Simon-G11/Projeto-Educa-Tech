@@ -1,51 +1,46 @@
 // src/controllers/profileController.js
 
-const db = require('../config/database'); // Importa a conexão do banco
+const db = require('../config/database');
 
-// 1. MOSTRAR a página de perfil
+// 1. MOSTRAR a página de perfil (ATUALIZADA)
 const getProfilePage = async (req, res) => {
-    
-    // Pega o ID do "crachá" (sessão)
     const userId = req.session.alunoId; 
 
     try {
-        // Query que busca TUDO sobre o aluno
         const query = `
             SELECT 
-                a.nome AS username,
-                a.idade,
-                a.turma,
-                a.descricao,
-                a.avatar,
+                a.nome AS username, a.idade, a.turma, a.descricao, a.avatar,
                 COALESCE(SUM(p.pontos), 0) AS total_pontos,
                 COALESCE(COUNT(DISTINCT p.id_jogo), 0) AS total_jogos
-            FROM 
-                alunos AS a
-            LEFT JOIN 
-                pontuacoes AS p ON a.id_aluno = p.id_aluno
-            WHERE 
-                a.id_aluno = ?
-            GROUP BY
-                a.id_aluno, a.nome, a.idade, a.turma, a.descricao, a.avatar;
+            FROM alunos AS a
+            LEFT JOIN pontuacoes AS p ON a.id_aluno = p.id_aluno
+            WHERE a.id_aluno = ?
+            GROUP BY a.id_aluno;
         `;
 
         const [rows] = await db.query(query, [userId]);
         
         if (rows.length === 0) {
-            req.session.destroy(); // Limpa sessão inválida
+            req.session.destroy();
             return res.redirect('/login');
         }
 
         const dadosDoUsuario = rows[0];
         const level = Math.floor(dadosDoUsuario.total_pontos / 500) + 1;
 
-        // Envia todos os dados para o EJS
+        // --- LÓGICA DO AVATAR ATUALIZADA ---
+        // Pega a "semente" do avatar (ex: 'a1b2c3d') ou usa o username se não houver
+        const avatarSeed = dadosDoUsuario.avatar || dadosDoUsuario.username;
+        // Monta a URL completa do avatar
+        const avatarUrl = `https://api.dicebear.com/7.x/bottts/svg?seed=${avatarSeed}`;
+        // --- FIM DA LÓGICA DO AVATAR ---
+
         const profileData = {
             username: dadosDoUsuario.username,
             idade: dadosDoUsuario.idade,
             turma: dadosDoUsuario.turma,
-            descricao: dadosDoUsuario.descricao || '', // Garante que não seja 'null'
-            avatar: dadosDoUsuario.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${dadosDoUsuario.username}`, 
+            descricao: dadosDoUsuario.descricao || '',
+            avatarUrl: avatarUrl, // 👈 Enviamos a URL completa para o EJS
             points: dadosDoUsuario.total_pontos,
             level: level, 
             games: dadosDoUsuario.total_jogos
@@ -59,7 +54,63 @@ const getProfilePage = async (req, res) => {
     }
 };
 
-// Exporta a função
+
+// -----------------------------------------------------------------
+// 👇 FUNÇÕES NOVAS ADICIONADAS AQUI 👇
+
+/**
+ * 2. PROCESSAR a atualização da descrição (NOVA)
+ */
+const updateProfile = async (req, res) => {
+    // Pega o ID do aluno da sessão (seguro)
+    const userId = req.session.alunoId;
+    // Pega a nova descrição do formulário
+    const { descricao } = req.body;
+
+    try {
+        // Atualiza o banco de dados
+        const updateQuery = 'UPDATE alunos SET descricao = ? WHERE id_aluno = ?';
+        await db.query(updateQuery, [descricao, userId]);
+        
+        // Redireciona de volta para o perfil para ver a mudança
+        res.redirect('/perfil');
+
+    } catch (error) {
+        console.error('Erro ao atualizar perfil:', error);
+        res.status(500).send('Erro ao salvar alterações.');
+    }
+};
+
+/**
+ * 3. PROCESSAR a troca de avatar (NOVA)
+ */
+const updateAvatar = async (req, res) => {
+    const userId = req.session.alunoId;
+
+    // Gera uma "semente" aleatória (ex: "kfr83j")
+    const newSeed = Math.random().toString(36).substring(2, 10);
+
+    try {
+        // Salva a nova semente no banco
+        const updateQuery = 'UPDATE alunos SET avatar = ? WHERE id_aluno = ?';
+        await db.query(updateQuery, [newSeed, userId]);
+        
+        // Redireciona de volta para o perfil para ver o novo avatar
+        res.redirect('/perfil');
+
+    } catch (error) {
+        console.error('Erro ao atualizar avatar:', error);
+        res.status(500).send('Erro ao salvar alterações.');
+    }
+};
+
+// 👆 FIM DAS FUNÇÕES NOVAS 👆
+// -----------------------------------------------------------------
+
+
+// Exporta tudo
 module.exports = {
-    getProfilePage
+    getProfilePage,
+    updateProfile,
+    updateAvatar
 };

@@ -111,3 +111,30 @@ module.exports = {
     getAdminPage,
     getLogout
 };
+
+// 7. MOSTRAR a página de gestão de alunos (NOVO)
+const getAlunosPage = async (req, res) => {
+    try {
+        // Busca todos os alunos, ordenados por nome
+        const query = 'SELECT id_aluno, nome, usuario, turma FROM alunos ORDER BY nome';
+        const [alunos] = await db.query(query);
+
+        // Renderiza a nova view e passa a lista de alunos
+        res.render('adminAlunos', { alunos: alunos });
+
+    } catch (error) {
+        console.error('Erro ao buscar lista de alunos:', error);
+        res.status(500).send('Erro interno do servidor.');
+    }
+};
+
+// Agora, atualize o module.exports para incluir a nova função:
+module.exports = {
+    getLoginPage,
+    postLogin,
+    getRegisterPage,
+    postRegister,
+    getAdminPage,
+    getLogout,
+    getAlunosPage // 👈 ADICIONADO AQUI
+};

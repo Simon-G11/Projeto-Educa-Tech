@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerir Alunos - Admin</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="icon" href="/img/logo-educatech.svg" type="image/svg+xml">
+    <style>
+        /* Estilos para a tabela */
+        .container-large { max-width: 900px; }
+        .alunos-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .alunos-table th, .alunos-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        .alunos-table th { background-color: #f4f4f4; }
+        .alunos-table tr:nth-child(even) { background-color: #f9f9f9; }
+        .actions-links a {
+            margin-right: 10px;
+            color: #00796b;
+            text-decoration: none;
+        }
+        .actions-links a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container container-large">
+        <h2>Gerir Alunos</h2>
+        
+        <table class="alunos-table">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Usuário</th>
+                    <th>Turma</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% alunos.forEach(aluno => { %>
+                    <tr>
+                        <td><%= aluno.nome %></td>
+                        <td><%= aluno.usuario %></td>
+                        <td><%= aluno.turma %></td>
+                        <td class="actions-links">
+                            <a href="#">Editar</a>
+                            <a href="#">Excluir</a>
+                        </td>
+                    </tr>
+                <% }) %>
+
+                <% if (alunos.length === 0) { %>
+                    <tr>
+                        <td colspan="4" style="text-align: center;">Nenhum aluno cadastrado.</td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+
+        <a href="/admin" class="btn btn-secondary" style="text-decoration: none; width: auto; margin-top: 20px;">Voltar ao Painel</a>
+    </div>
+</body>
+</html>
