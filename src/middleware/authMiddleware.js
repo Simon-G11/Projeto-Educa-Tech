@@ -17,7 +17,18 @@ const checarSeAdmin = (req, res, next) => {
     res.status(403).send('Acesso negado. Você não é um administrador.');
 };
 
+// Middleware para checar se o usuário é um PROFESSOR GERAL (NOVO)
+const checarSeProfessor = (req, res, next) => {
+    // Checa se está logado E se é professor
+    if (req.session.alunoId && req.session.role === 'professor') {
+        return next(); // Se for Professor, continue
+    }
+    // Se não for professor, nega o acesso
+    res.status(403).send('Acesso negado. Acesso exclusivo para professores.');
+};
+
 module.exports = {
     checarSeLogado,
-    checarSeAdmin
+    checarSeAdmin,
+    checarSeProfessor
 };

@@ -28,6 +28,11 @@ h2 {
     margin: 30px auto; 
 }
 
+.admin-actions {
+    padding: 25px 60px;
+    max-width: 400px;
+   
+}
 .login-header {
     text-align: center;
     margin-bottom: 20px;
@@ -72,7 +77,7 @@ h2 {
     display: inline-block; 
     background-color: #4CAF50;
     color: white;
-    padding: 12px 20px;
+    padding: 12px 0px;
     border: none;
     border-radius: 8px; 
     cursor: pointer;

@@ -28,4 +28,6 @@ router.post('/admin/aluno/:id/editar', checarSeAdmin, authController.postEditarA
 // Rota para PROCESSAR a exclusão do aluno
 router.post('/admin/aluno/:id/excluir', checarSeAdmin, authController.postExcluirAluno);
 
+
+
 module.exports = router;

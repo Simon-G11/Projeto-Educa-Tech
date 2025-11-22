@@ -12,6 +12,17 @@ router.post('/perfil/atualizar', checarSeLogado, profileController.updateProfile
 // Rota para GERAR um novo avatar aleatório
 router.get('/perfil/novo-avatar', checarSeLogado, profileController.updateAvatar);
 
+// Rota Principal do Aluno (Dashboard)
+router.get('/dashboard', checarSeLogado, profileController.getStudentDashboard);
+
+// Rota para MOSTRAR o perfil (usado para edição)
+router.get('/perfil', checarSeLogado, profileController.getProfilePage);
+
+// Rota para PROCESSAR a atualização da descrição
+router.post('/perfil/atualizar', checarSeLogado, profileController.updateProfile);
+
+// Rota para GERAR um novo avatar aleatório
+router.get('/perfil/novo-avatar', checarSeLogado, profileController.updateAvatar);
 // FIM DAS ROTAS
 // -----------------------------------------------------------------
 

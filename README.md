@@ -23,6 +23,9 @@ O sistema é construído em **Node.js** com **Express** e utiliza **EJS** para r
     * Integração com MySQL (`mysql2`).
     * Script de schema (`database/schema.sql`) para fácil replicação do banco.
 
+* **Adicionando novas facilidades&** 
+    * Gerenciamento de jogos pelo professor;
+    * Menu inicial e biblioteca de jogosp para usuário "Aluno".
 ---
 
 ## 🛠️ Tecnologias Utilizadas

@@ -23,7 +23,7 @@ const postLogin = async (req, res) => {
             if (senhaCorreta) {
                 req.session.alunoId = aluno.id_aluno;
                 req.session.role = 'aluno';
-                return res.redirect('/perfil');
+                return res.redirect('/dashboard');
             }
         }
 

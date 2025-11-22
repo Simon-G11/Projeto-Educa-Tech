@@ -11,6 +11,8 @@ const session = require('express-session'); // Para o login
 const authRoutes = require('./src/routes/authRoutes');
 // Importa o "menu" do perfil
 const profileRoutes = require('./src/routes/profileRoutes');
+// Importa o "menu" da biblioteca de jogos
+const libraryRoutes = require('./src/routes/libraryRoutes');
 
 // 3. INICIALIZAÇÃO DO APP
 // =============================================
@@ -53,9 +55,14 @@ app.get('/', (req, res) => {
 app.use(authRoutes);
 // Todas as rotas em profileRoutes (como /perfil) estarão ativas.
 app.use(profileRoutes);
-
+// Todas as rotas em libraryRoutes serão montadas em '/jogos'.
+// Isso faz com que rotas definidas em `src/routes/libraryRoutes.js`
+// como `/admin` passem a responder em `/jogos/admin`, alinhando
+// com os links usados em `src/views/library.ejs`.
+app.use('/jogos', libraryRoutes);
 // 6. INICIALIZAÇÃO DO SERVIDOR
 // =============================================
 app.listen(PORT, () => {
     console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);
 });
+

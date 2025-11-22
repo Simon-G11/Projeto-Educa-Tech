@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Jogos - Professor</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        /* Estilos específicos para a tabela (similar ao adminAlunos.ejs) */
+        .container-large {
+            max-width: 800px; /* Expande o container para a tabela caber melhor */
+        }
+        
+        .jogos-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .jogos-table th, .jogos-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .jogos-table thead th {
+            background-color: #00796b; /* Cor primária do tema */
+            color: white;
+            font-weight: bold;
+        }
+        
+        .jogos-table tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .jogos-table tbody tr:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* Estilo para transformar links de ação em botões com estilo de link */
+        .actions-links a {
+            color: #00796b; 
+            text-decoration: none;
+            margin-right: 15px;
+            transition: color 0.2s;
+        }
+        .actions-links a:hover {
+            color: #004d40;
+            text-decoration: underline;
+        }
+        .actions-links a.link-excluir {
+            color: #e53935; /* Vermelho para exclusão/perigo */
+        }
+        .actions-links a.link-excluir:hover {
+            color: #c62828;
+        }
+        
+        /* Layout para os botões "Novo Jogo" e "Voltar" */
+        .header-actions {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap; 
+        }
+
+        .header-actions .btn {
+            width: auto;
+            flex-grow: 1; 
+            margin-top: 0;
+            padding: 10px 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container container-large">
+        <h2>Gerenciar Jogos</h2>
+        
+        <p>Lista de todos os jogos cadastrados na plataforma. Você pode ativar/desativar, editar e excluir jogos.</p>
+        
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+        
+        <div class="header-actions">
+            <a href="/jogos/admin/novo" class="btn">+ Cadastrar Novo Jogo</a>
+            
+            <a href="/admin" class="btn btn-secondary">Voltar ao Painel</a>
+        </div>
+
+        <table class="jogos-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome do Jogo</th>
+                    <th>Ativo</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <% if (jogos.length === 0) { %>
+                    <tr>
+                        <td colspan="4" style="text-align: center; color: #777;">Nenhum jogo cadastrado.</td>
+                    </tr>
+                <% } %>
+                
+                <% jogos.forEach(j => { %>
+                    <tr>
+                        <td><%= j.id_jogo %></td>
+                        <td><%= j.nome_jogo %></td>
+                        <td><%= j.ativo ? "Sim" : "Não" %></td>
+                        <td class="actions-links">
+                            <a href="/jogos/admin/editar/<%= j.id_jogo %>">Editar</a>
+                            <a href="/jogos/admin/excluir/<%= j.id_jogo %>" class="link-excluir" 
+                               onclick="return confirm('Tem certeza que deseja excluir o jogo: <%= j.nome_jogo %>? Esta ação não pode ser desfeita.');">
+                                Excluir
+                            </a>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>

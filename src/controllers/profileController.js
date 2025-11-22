@@ -1,4 +1,5 @@
 const db = require('../config/database');
+const { get } = require('../routes/authRoutes');
 
 // 1. MOSTRAR a página de perfil
 const getProfilePage = async (req, res) => {
@@ -98,9 +99,34 @@ const updateAvatar = async (req, res) => {
     }
 };
 
+// NOVO: Renderiza o painel do aluno
+const getStudentDashboard = async (req, res) => {
+    const userId = req.session.alunoId; 
+
+    try {
+        const query = 'SELECT nome FROM alunos WHERE id_aluno = ?';
+        const [rows] = await db.query(query, [userId]);
+        
+        if (rows.length === 0) {
+            req.session.destroy();
+            return res.redirect('/login');
+        }
+
+        const username = rows[0].nome;
+        
+        // Renderiza o novo painel
+        res.render('student_dashboard', { username: username });
+
+    } catch (error) {
+        console.error('Erro ao buscar nome do aluno para o dashboard:', error);
+        res.status(500).send('Erro interno do servidor ao carregar o painel.');
+    }
+};
+
 // Exporta tudo
 module.exports = {
     getProfilePage,
     updateProfile,
-    updateAvatar
+    updateAvatar,
+    getStudentDashboard
 };
